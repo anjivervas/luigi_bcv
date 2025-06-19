@@ -1,0 +1,1 @@
+from app.extensions.error_handlers import register_error_handlers
