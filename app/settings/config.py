@@ -1,3 +1,5 @@
+"""Configuración general de la aplicación."""
+
 class Config:
     #Configuracion de SQLAlchemy
     SQLALCHEMY_DATABASE_URI= "sqlite:///database.db"
