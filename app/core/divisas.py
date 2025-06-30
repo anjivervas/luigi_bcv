@@ -35,3 +35,15 @@ class Divisas(StrEnum):
     def divisa(self) -> str:
         """Devuelve el nombre de la divisa en minúsculas."""
         return self.value.lower()
+    
+    @staticmethod
+    def to_list() -> list:
+        list = [
+            Divisas.DOLAR,
+            Divisas.EURO,
+            Divisas.YUAN,
+            Divisas.LIRA,
+            Divisas.RUBLE
+        ]
+
+        return list
