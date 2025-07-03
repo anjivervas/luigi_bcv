@@ -2,7 +2,8 @@ from telegram.ext import Application, CommandHandler
 
 from app.settings import Config
 from app.app_log import get_logger
-from app.bot.commands import start
+from app.core import Divisas
+from app.bot.commands import start, dolar
 
 logger = get_logger(f"[{Config().APP_NAME}]")
 
@@ -28,6 +29,7 @@ def main():
 
     # Handlers
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler(f"{Divisas.DOLAR.value}", dolar))
     
     try:
         application.run_polling()
