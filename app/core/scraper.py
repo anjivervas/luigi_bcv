@@ -20,7 +20,7 @@ class BCVScraper:
     def _get_soup(self) -> Optional[BeautifulSoup]:
         """Obtiene y parsea el HTML de la página del BCV."""
         try:
-            response = requests.get(self.url, verify=False, timeout=10)
+            response = requests.get(self.url, verify=False, timeout=15)
             response.raise_for_status()
             return BeautifulSoup(response.text, "html.parser")
         except requests.RequestException as e:

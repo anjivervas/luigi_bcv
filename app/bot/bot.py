@@ -3,7 +3,7 @@ from telegram.ext import Application, CommandHandler
 from app.settings import Config
 from app.app_log import get_logger
 from app.core import Divisas
-from app.bot.commands import start, dolar
+from app.bot.commands import start, dolar, euro, lira, rublo, yuan
 
 logger = get_logger(f"[{Config().APP_NAME}]")
 
@@ -30,6 +30,10 @@ def main():
     # Handlers
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler(f"{Divisas.DOLAR.value}", dolar))
+    application.add_handler(CommandHandler(f"{Divisas.EURO.value}", euro))
+    application.add_handler(CommandHandler(f"{Divisas.LIRA.value}", lira))
+    application.add_handler(CommandHandler(f"{Divisas.RUBLE.value}", rublo))
+    application.add_handler(CommandHandler(f"{Divisas.YUAN.value}", yuan))
     
     try:
         application.run_polling()
