@@ -5,7 +5,10 @@ from bs4 import BeautifulSoup
 from typing import Optional
 
 from app.core.divisas import Divisas
-from app.settings.config import Config
+from app.settings import Config
+from app.app_log import get_logger
+
+logger = get_logger(f"[{Config().APP_NAME}: Scraper Module]")
 
 class BCVScraper:
     """Scraper para extraer el valor de las divisas desde el sitio web del BCV."""
@@ -21,7 +24,7 @@ class BCVScraper:
             response.raise_for_status()
             return BeautifulSoup(response.text, "html.parser")
         except requests.RequestException as e:
-            print(f"[BCVScraper] Error obteniendo la página del BCV: {e}")
+            logger.error(f"[BCVScraper] Error obteniendo la página del BCV: {e}")
             return None
 
     def _extraer_divisa_raw(self, divisa: Divisas) -> Optional[str]:
@@ -31,12 +34,12 @@ class BCVScraper:
 
         div_container = self._soup.find("div", {"id": divisa.divisa()})
         if not div_container:
-            print(f"[BCVScraper] No se encontró el contenedor para la divisa {divisa}")
+            logger.error(f"[BCVScraper] No se encontró el contenedor para la divisa {divisa}")
             return None
 
         valor_div = div_container.find("div", {"class": "col-sm-6 col-xs-6 centrado"})
         if not valor_div:
-            print(f"[BCVScraper] No se encontró la tasa para la divisa {divisa}")
+            logger.error(f"[BCVScraper] No se encontró la tasa para la divisa {divisa}")
             return None
 
         return valor_div.get_text(strip=True)
@@ -48,9 +51,10 @@ class BCVScraper:
             return None
 
         try:
+            logger.info(f"Scrapeando divisa: {divisa}")
             return float(valor_crudo.replace(",", "."))
         except ValueError:
-            print(f"[BCVScraper] Error parseando el valor '{valor_crudo}' para {divisa}")
+            logger.error(f"[BCVScraper] Error parseando el valor '{valor_crudo}' para {divisa}")
             return None
 
     def obtener_todas(self) -> dict[Divisas, float]:
