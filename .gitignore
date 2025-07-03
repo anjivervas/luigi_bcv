@@ -1,5 +1,10 @@
 # venv
 venv/
 .env
+
 # pycache
 __pycache__/
+
+# logs
+logs/
+*.log
