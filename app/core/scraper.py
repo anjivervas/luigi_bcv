@@ -3,13 +3,15 @@
 import requests
 from bs4 import BeautifulSoup
 from typing import Optional
+
 from app.core.divisas import Divisas
+from app.settings.config import Config
 
 class BCVScraper:
     """Scraper para extraer el valor de las divisas desde el sitio web del BCV."""
 
     def __init__(self):
-        self.url = "https://www.bcv.org.ve"
+        self.url = Config().URL_BASE
         self._soup = self._get_soup()
 
     def _get_soup(self) -> Optional[BeautifulSoup]:
