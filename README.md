@@ -1,5 +1,4 @@
-
- 💰 BCV Divisas Bot 
+💰 BCV Divisas Bot 
 
 ![Python](https://img.shields.io/badge/Python-3.12%252B-blue?logo=python&logoColor=white)
 ![Telegram](https://img.shields.io/badge/Telegram-Bot-26A5E4?logo=telegram)
