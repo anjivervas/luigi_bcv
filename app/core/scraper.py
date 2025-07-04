@@ -22,9 +22,10 @@ class BCVScraper:
         try:
             response = requests.get(self.url, verify=False, timeout=15)
             response.raise_for_status()
+            logger.info(f"Conectado a {self.url} exitosamente.")
             return BeautifulSoup(response.text, "html.parser")
         except requests.RequestException as e:
-            logger.error(f"[BCVScraper] Error obteniendo la página del BCV: {e}")
+            logger.error(f"Error obteniendo la página del BCV: {e}")
             return None
 
     def _extraer_divisa_raw(self, divisa: Divisas) -> Optional[str]:
@@ -34,12 +35,12 @@ class BCVScraper:
 
         div_container = self._soup.find("div", {"id": divisa.divisa()})
         if not div_container:
-            logger.error(f"[BCVScraper] No se encontró el contenedor para la divisa {divisa}")
+            logger.error(f"No se encontró el contenedor para la divisa {divisa}")
             return None
 
         valor_div = div_container.find("div", {"class": "col-sm-6 col-xs-6 centrado"})
         if not valor_div:
-            logger.error(f"[BCVScraper] No se encontró la tasa para la divisa {divisa}")
+            logger.error(f"No se encontró la tasa para la divisa {divisa}")
             return None
 
         return valor_div.get_text(strip=True)
@@ -54,7 +55,7 @@ class BCVScraper:
             logger.info(f"Scrapeando divisa: {divisa}")
             return float(valor_crudo.replace(",", "."))
         except ValueError:
-            logger.error(f"[BCVScraper] Error parseando el valor '{valor_crudo}' para {divisa}")
+            logger.error(f"Error parseando el valor '{valor_crudo}' para {divisa}")
             return None
 
     def obtener_todas(self) -> dict[Divisas, float]:
@@ -64,4 +65,5 @@ class BCVScraper:
             tasa = self.obtener_tasa(divisa)
             if tasa is not None:
                 tasas[divisa] = tasa
+        logger.info(f"Tasas obtenidas: {tasas}")
         return tasas
